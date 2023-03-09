@@ -1,7 +1,6 @@
-import { FC, memo, useCallback } from "react";
+import { FC, memo } from "react";
 import {
   Modal,
-  useDisclosure,
   ModalBody,
   ModalContent,
   ModalHeader,

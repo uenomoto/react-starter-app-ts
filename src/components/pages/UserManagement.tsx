@@ -11,6 +11,7 @@ import { UserCard } from "../organisms/user/UserCard";
 import { UserDetailModal } from "../organisms/user/UserDetailModal";
 import { useSelectUser } from "../../hooks/useSelectUser";
 import { useAllUsers } from "../../hooks/useAllUsers";
+import { Console } from "console";
 
 export const UserManagement: FC = memo(() => {
   //カスタムフック呼び出し
