@@ -8,8 +8,9 @@ import {
 } from "@chakra-ui/react";
 
 import { UserCard } from "../organisms/user/UserCard";
-import { useAllUsers } from "../../hooks/useAllUsers";
 import { UserDetailModal } from "../organisms/user/UserDetailModal";
+import { useSelectUser } from "../../hooks/useSelectUser";
+import { useAllUsers } from "../../hooks/useAllUsers";
 
 export const UserManagement: FC = memo(() => {
   //カスタムフック呼び出し
@@ -20,8 +21,15 @@ export const UserManagement: FC = memo(() => {
   // モーダルに使うステート↓
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { onSelectUser, selectUser } = useSelectUser();
+
   // クリックしたらモーダルがオープンする↓
-  const onClickUser = useCallback(() => onOpen(), []);
+  const onClickUser = useCallback(
+    (id: number) => {
+      onSelectUser({ id, users, onOpen });
+    },
+    [users, onSelectUser, onOpen]
+  );
 
   return (
     <>
@@ -32,15 +40,10 @@ export const UserManagement: FC = memo(() => {
       ) : (
         <>
           <Wrap p={{ base: 4, md: 10 }} justify="center">
-            <UserCard
-              imageUrl={"https://source.unsplash.com/random"}
-              userName={"ここちゃん"}
-              fullName={"ueno CoCo"}
-              onClick={onClickUser}
-            />
             {users.map((user) => (
               <WrapItem key={user.id}>
                 <UserCard
+                  id={user.id}
                   imageUrl={"https://source.unsplash.com/random"}
                   userName={user.username}
                   fullName={user.name}
@@ -49,7 +52,11 @@ export const UserManagement: FC = memo(() => {
               </WrapItem>
             ))}
           </Wrap>
-          <UserDetailModal isOpen={isOpen} onClose={onClose} />
+          <UserDetailModal
+            isOpen={isOpen}
+            onClose={onClose}
+            user={selectUser}
+          />
         </>
       )}
     </>
